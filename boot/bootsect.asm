@@ -1,5 +1,16 @@
 ; Identical to lesson 13's boot sector, but the %included files have new paths
-[org 0x7c00]
+
+[bits 16]
+[org 0x7C00]
+
+    jmp 0x0000:start_16 ; ensure cs == 0x0000
+
+start_16:
+    ; initialise essential segment registers
+    xor ax, ax
+    mov ds, ax
+    mov es, ax
+
 KERNEL_OFFSET equ 0x1000 ; The same one we used when linking the kernel
 
     mov [BOOT_DRIVE], dl ; Remember that the BIOS sets us the boot drive in 'dl' on boot
@@ -22,6 +33,7 @@ KERNEL_OFFSET equ 0x1000 ; The same one we used when linking the kernel
 %include "boot/switch_pm.asm"
 
 [bits 16]
+
 load_kernel:
     mov bx, MSG_LOAD_KERNEL
     call print
