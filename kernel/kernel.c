@@ -1,8 +1,13 @@
-/* This will force us to create a kernel entry function instead of jumping to kernel.c:0x00 */
-void dummy_test_entrypoint() {
-}
+#include "../drivers/screen.h"
 
 void main() {
-    char* video_memory = (char*) 0xb8000;
-    *video_memory = 'X';
+    clear_screen();
+    int i = 0;
+    for (i = 0; i < 24; i++) {
+        char str[255];
+        int_to_ascii(i, str);
+        kprint(str);
+        kprint("\n");
+    }
+    kprint("Test!");
 }
